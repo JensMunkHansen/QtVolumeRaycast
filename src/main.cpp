@@ -26,12 +26,13 @@
 
 #include "mainwindow.h"
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[])
+{
   QApplication a(argc, argv);
 
   QGLFormat glFormat;
   glFormat.setVersion(4, 3);
-  glFormat.setProfile(QGLFormat::CoreProfile);  // Requires >=Qt-4.8.0
+  glFormat.setProfile(QGLFormat::CoreProfile);
   glFormat.setSampleBuffers(true);
 
   MainWindow w;

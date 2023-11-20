@@ -20,10 +20,13 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#version 130
+#version 430 core
 
-in vec4 a_position;
+layout(location = 0) in vec4 a_position;
 
-uniform mat4 ModelViewProjectionMatrix;
+layout(location = 1) uniform mat4 ModelViewProjectionMatrix;
 
-void main() { gl_Position = ModelViewProjectionMatrix * a_position; }
+void main()
+{
+  gl_Position = ModelViewProjectionMatrix * a_position;
+}

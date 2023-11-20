@@ -20,11 +20,11 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#version 130
+#version 430 core
 
-out vec4 a_colour;
+layout(location = 0) out vec4 a_colour;
 
-uniform mat4 ViewMatrix;
+layout(location = 4) uniform mat4 ViewMatrix;
 uniform mat3 NormalMatrix;
 
 uniform float focal_length;
@@ -41,25 +41,28 @@ uniform vec3 light_position;
 uniform float step_length;
 uniform float threshold;
 
-uniform sampler3D volume;
-uniform sampler2D jitter;
+layout(binding = 0) uniform sampler3D volume;
+layout(binding = 1) uniform sampler2D jitter;
 
 uniform float gamma;
 
 // Ray
-struct Ray {
+struct Ray
+{
   vec3 origin;
   vec3 direction;
 };
 
 // Axis-aligned bounding box
-struct AABB {
+struct AABB
+{
   vec3 top;
   vec3 bottom;
 };
 
 // Estimate normal from a finite difference approximation of the gradient
-vec3 normal(vec3 position, float intensity) {
+vec3 normal(vec3 position, float intensity)
+{
   float d = step_length;
   float dx = texture(volume, position + vec3(d, 0, 0)).r - intensity;
   float dy = texture(volume, position + vec3(0, d, 0)).r - intensity;
@@ -68,7 +71,8 @@ vec3 normal(vec3 position, float intensity) {
 }
 
 // Slab method for ray-box intersection
-void ray_box_intersection(Ray ray, AABB box, out float t_0, out float t_1) {
+void ray_box_intersection(Ray ray, AABB box, out float t_0, out float t_1)
+{
   vec3 direction_inv = 1.0 / ray.direction;
   vec3 t_top = direction_inv * (box.top - ray.origin);
   vec3 t_bottom = direction_inv * (box.bottom - ray.origin);
@@ -80,7 +84,8 @@ void ray_box_intersection(Ray ray, AABB box, out float t_0, out float t_1) {
   t_1 = min(t.x, t.y);
 }
 
-void main() {
+void main()
+{
   vec3 ray_direction;
   ray_direction.xy = 2.0 * gl_FragCoord.xy / viewport_size - 1.0;
   ray_direction.x *= aspect_ratio;
@@ -106,10 +111,12 @@ void main() {
   vec3 colour = pow(background_colour, vec3(gamma));
 
   // Ray march until reaching the end of the volume
-  while (ray_length > 0) {
+  while (ray_length > 0)
+  {
     float intensity = texture(volume, position).r;
 
-    if (intensity > threshold) {
+    if (intensity > threshold)
+    {
       // Get closer to the surface
       position -= step_vector * 0.5;
       intensity = texture(volume, position).r;

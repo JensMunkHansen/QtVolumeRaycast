@@ -20,7 +20,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#version 130
+#version 430
 
 out vec4 a_colour;
 
